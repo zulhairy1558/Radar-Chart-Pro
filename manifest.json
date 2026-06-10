@@ -2,7 +2,7 @@
   "name": "RadarViz Pro",
   "short_name": "RadarViz",
   "description": "Interactive radar chart editor with CSV/JSON import, export, theming, and data table.",
-  "start_url": "/",
+  "start_url": ".",
   "display": "standalone",
   "theme_color": "#06d6f0",
   "background_color": "#060c14",
