@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RadarViz Pro</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#06d6f0">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RadarViz">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header class="navbar" role="banner">
+    <div class="nav-brand">
+      <svg class="brand-icon" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+        <polygon points="18,2 32,10 32,26 18,34 4,26 4,10" stroke="currentColor" stroke-width="1.8" fill="none" opacity="0.9"/>
+        <polygon points="18,9 26,13.5 26,22.5 18,27 10,22.5 10,13.5" stroke="currentColor" stroke-width="1.4" fill="none" opacity="0.6"/>
+        <circle cx="18" cy="18" r="2.5" fill="currentColor" opacity="0.8"/>
+        <line x1="18" y1="2"  x2="18" y2="9"  stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="32" y1="10" x2="26" y2="13.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="32" y1="26" x2="26" y2="22.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="18" y1="34" x2="18" y2="27"   stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="4"  y1="26" x2="10" y2="22.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+        <line x1="4"  y1="10" x2="10" y2="13.5" stroke="currentColor" stroke-width="1" opacity="0.5"/>
+      </svg>
+      <span class="brand-name">RadarViz <em>Pro</em></span>
+      <span class="brand-badge">v3</span>
+    </div>
+
+    <div class="nav-center">
+      <button class="nav-btn nav-btn-ghost" id="btn-clear" title="Clear all data">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/>
+          <path d="M10 11v6M14 11v6M9 6V4h6v2"/>
+        </svg>
+        Clear
+      </button>
+    </div>
+
+    <div class="nav-right">
+      <div class="dropdown" id="theme-dropdown">
+        <button class="nav-btn nav-btn-icon" id="theme-btn" aria-label="Switch theme" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="5"/>
+            <line x1="12" y1="1" x2="12" y2="3"/>  <line x1="12" y1="21" x2="12" y2="23"/>
+            <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+            <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+            <line x1="1" y1="12" x2="3" y2="12"/>  <line x1="21" y1="12" x2="23" y2="12"/>
+            <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+            <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+          </svg>
+        </button>
+        <div class="dd-menu" role="menu" aria-label="Theme options">
+          <div class="dd-header">Theme</div>
+          <button class="dd-item" data-theme="dark"    role="menuitem"><span class="theme-dot td-dark"></span>Dark</button>
+          <button class="dd-item" data-theme="light"   role="menuitem"><span class="theme-dot td-light"></span>Light</button>
+          <button class="dd-item" data-theme="ocean"   role="menuitem"><span class="theme-dot td-ocean"></span>Ocean</button>
+          <button class="dd-item" data-theme="aurora"  role="menuitem"><span class="theme-dot td-aurora"></span>Aurora</button>
+          <button class="dd-item" data-theme="carbon"  role="menuitem"><span class="theme-dot td-carbon"></span>Carbon</button>
+          <button class="dd-item" data-theme="paper"   role="menuitem"><span class="theme-dot td-paper"></span>Paper</button>
+        </div>
+      </div>
+
+      <div class="dropdown" id="export-dropdown">
+        <button class="nav-btn nav-btn-accent" id="export-btn" aria-haspopup="true" aria-expanded="false">
+          <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Export
+        </button>
+        <div class="dd-menu dd-menu-right" role="menu" aria-label="Export options">
+          <div class="dd-header">Chart</div>
+          <button class="dd-item" id="ex-png" role="menuitem">PNG Image</button>
+          <button class="dd-item" id="ex-svg" role="menuitem">SVG Vector</button>
+          <button class="dd-item" id="ex-html" role="menuitem">Interactive HTML</button>
+          <div class="dd-divider"></div>
+          <div class="dd-header">Data</div>
+          <button class="dd-item" id="ex-csv" role="menuitem">CSV File</button>
+          <button class="dd-item" id="ex-json" role="menuitem">JSON File</button>
+        </div>
+      </div>
+
+      <button class="nav-btn nav-btn-icon" id="btn-install" style="display:none;" title="Install App">
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        Install
+      </button>
+
+      <button class="nav-btn nav-btn-icon" id="sidebar-toggle" aria-label="Toggle sidebar" aria-controls="sidebar">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="3" y="3" width="18" height="18" rx="2"/>
+          <line x1="9" y1="3" x2="9" y2="21"/>
+        </svg>
+      </button>
+    </div>
+    <div class="dev-credit">Developed by Mohd Zulhairy, 2026</div>
+  </header>
+
+  <div class="app-layout">
+    <aside class="sidebar" id="sidebar" aria-label="Chart controls">
+      <nav class="tab-rail" role="tablist" aria-label="Control panels">
+        <button class="tab-btn active" data-tab="tab-data" role="tab" aria-selected="true" title="Data">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+            <polyline points="14 2 14 8 20 8"/>
+            <line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/>
+            <polyline points="10 9 9 9 8 9"/>
+          </svg>
+          <span class="tab-label">Data</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-series" role="tab" aria-selected="false" title="Series">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+          <span class="tab-label">Series</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-chart" role="tab" aria-selected="false" title="Chart">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="2" x2="12" y2="22"/>
+            <line x1="2" y1="12" x2="22" y2="12"/>
+            <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/>
+          </svg>
+          <span class="tab-label">Chart</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-meta" role="tab" aria-selected="false" title="Meta">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="8" x2="12" y2="12"/>
+            <line x1="12" y1="16" x2="12.01" y2="16"/>
+          </svg>
+          <span class="tab-label">Meta</span>
+        </button>
+      </nav>
+
+      <div class="tab-body">
+        <!-- DATA TAB -->
+        <div id="tab-data" class="tab-panel active" role="tabpanel">
+          <div class="panel-section">
+            <h3 class="section-title">Import CSV</h3>
+            <label class="upload-zone" for="file-input" id="upload-zone">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5" class="dz-icon">
+                <polyline points="16 16 12 12 8 16"/>
+                <line x1="12" y1="12" x2="12" y2="21"/>
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+              <span class="dz-text">Drop CSV or click to browse</span>
+              <span class="dz-hint">First row: headers. First column: axis names.</span>
+            </label>
+            <input type="file" id="file-input" accept=".csv,.txt" class="sr-only">
+            <div id="upload-feedback" class="upload-feedback" aria-live="polite"></div>
+          </div>
+
+          <div class="panel-section">
+            <h3 class="section-title">Import JSON</h3>
+            <label class="upload-zone" for="json-input" id="json-zone">
+              <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="1.5">
+                <polyline points="16 16 12 12 8 16"/>
+                <line x1="12" y1="12" x2="12" y2="21"/>
+                <path d="M20.39 18.39A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.3"/>
+              </svg>
+              <span class="dz-text">Drop JSON or click to browse</span>
+              <span class="dz-hint">Export format from RadarViz Pro.</span>
+            </label>
+            <input type="file" id="json-input" accept=".json" class="sr-only">
+          </div>
+
+          <div class="panel-section">
+            <h3 class="section-title">CSV Format</h3>
+            <pre class="code-hint">Axis,SeriesA,SeriesB
+Strength,85,72
+Hardness,60,90
+Ductility,78,45</pre>
+          </div>
+        </div>
+
+        <!-- SERIES & AXES TAB -->
+        <div id="tab-series" class="tab-panel" role="tabpanel">
+          <div class="panel-section">
+            <div class="section-hdr">
+              <h3 class="section-title">Series</h3>
+              <button class="icon-btn accent-btn" id="btn-add-series" title="Add series">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </button>
+            </div>
+            <div id="series-list" class="item-list"></div>
+          </div>
+          <div class="panel-section">
+            <div class="section-hdr">
+              <h3 class="section-title">Axes</h3>
+              <button class="icon-btn accent-btn" id="btn-add-axis" title="Add axis">
+                <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                  <line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>
+                </svg>
+              </button>
+            </div>
+            <div id="axes-list" class="item-list"></div>
+          </div>
+        </div>
+
+        <!-- CHART SETTINGS TAB -->
+        <div id="tab-chart" class="tab-panel" role="tabpanel">
+          <div class="panel-section">
+            <h3 class="section-title">Visual</h3>
+            <div class="setting-row"><label for="grid-rings">Grid Rings</label><div class="range-wrap"><input type="range" id="grid-rings" min="2" max="10" value="5" step="1"><span class="range-val" id="grid-rings-val">5</span></div></div>
+            <div class="setting-row"><label for="fill-opacity">Fill Opacity</label><div class="range-wrap"><input type="range" id="fill-opacity" min="0" max="0.6" value="0.18" step="0.02"><span class="range-val" id="fill-opacity-val">0.18</span></div></div>
+            <div class="setting-row"><label for="stroke-width">Line Width</label><div class="range-wrap"><input type="range" id="stroke-width" min="0.5" max="6" value="2" step="0.5"><span class="range-val" id="stroke-width-val">2</span></div></div>
+            <div class="setting-row"><label for="point-size">Point Size</label><div class="range-wrap"><input type="range" id="point-size" min="0" max="10" value="4" step="1"><span class="range-val" id="point-size-val">4</span></div></div>
+            <div class="setting-row"><label for="label-font-size">Label Size</label><div class="range-wrap"><input type="range" id="label-font-size" min="8" max="20" value="13" step="1"><span class="range-val" id="label-font-size-val">13</span></div></div>
+          </div>
+          <div class="panel-section">
+            <h3 class="section-title">Options</h3>
+            <div class="toggle-row"><label for="show-grid-labels">Grid Labels</label><label class="toggle-sw"><input type="checkbox" id="show-grid-labels" checked><span class="sw-thumb"></span></label></div>
+            <div class="toggle-row"><label for="show-legend">Legend</label><label class="toggle-sw"><input type="checkbox" id="show-legend" checked><span class="sw-thumb"></span></label></div>
+            <div class="toggle-row"><label for="smooth-curves">Smooth Curves</label><label class="toggle-sw"><input type="checkbox" id="smooth-curves"><span class="sw-thumb"></span></label></div>
+            <div class="toggle-row"><label for="animate-chart">Animations</label><label class="toggle-sw"><input type="checkbox" id="animate-chart" checked><span class="sw-thumb"></span></label></div>
+            <div class="toggle-row"><label for="glow-effect">Glow Effect</label><label class="toggle-sw"><input type="checkbox" id="glow-effect" checked><span class="sw-thumb"></span></label></div>
+          </div>
+          <div class="panel-section">
+            <h3 class="section-title">Scale Mode</h3>
+            <select id="scale-mode" class="select-input">
+              <option value="auto">Auto (per-axis max)</option>
+              <option value="global">Global (dataset max)</option>
+              <option value="fixed">Fixed (0 – 100)</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- META TAB -->
+        <div id="tab-meta" class="tab-panel" role="tabpanel">
+          <div class="panel-section">
+            <h3 class="section-title">Chart Title</h3>
+            <input type="text" id="chart-title-input" class="text-input" placeholder="Enter title…">
+            <input type="text" id="chart-subtitle-input" class="text-input mt8" placeholder="Enter subtitle…">
+          </div>
+          <div class="panel-section">
+            <h3 class="section-title">Watermark Text</h3>
+            <div class="toggle-row"><label for="wm-toggle">Show Text Watermark</label><label class="toggle-sw"><input type="checkbox" id="wm-toggle"><span class="sw-thumb"></span></label></div>
+            <input type="text" id="wm-text" class="text-input mt8" placeholder="Watermark text…" value="RadarViz Pro">
+            <div class="setting-row mt8"><label for="wm-opacity">Opacity</label><div class="range-wrap"><input type="range" id="wm-opacity" min="0.05" max="0.5" value="0.12" step="0.01"><span class="range-val" id="wm-opacity-val">0.12</span></div></div>
+          </div>
+          <div class="panel-section">
+            <h3 class="section-title">Image Watermark</h3>
+            <div class="toggle-row"><label for="img-wm-toggle">Show Image Watermark</label><label class="toggle-sw"><input type="checkbox" id="img-wm-toggle"><span class="sw-thumb"></span></label></div>
+            <label class="upload-zone" for="img-wm-input" style="margin-top:8px">
+              <span class="dz-text">Upload image (PNG, JPG, SVG)</span>
+            </label>
+            <input type="file" id="img-wm-input" accept="image/png,image/jpeg,image/svg+xml" class="sr-only">
+            <div class="setting-row mt8"><label for="img-wm-opacity">Image Opacity</label><div class="range-wrap"><input type="range" id="img-wm-opacity" min="0.05" max="0.8" value="0.2" step="0.01"><span class="range-val" id="img-wm-opacity-val">0.20</span></div></div>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <main class="content" role="main">
+      <div class="view-bar" role="tablist" aria-label="Views">
+        <button class="view-tab active" data-view="chart" role="tab">Radar Chart</button>
+        <button class="view-tab" data-view="table" role="tab">Data Table</button>
+        <button class="view-tab" data-view="entry" role="tab">Data Entry</button>
+        <span class="row-count" id="row-count"></span>
+      </div>
+
+      <!-- Chart view -->
+      <div id="view-chart" class="view-panel active">
+        <div id="chart-header" class="chart-header" style="display:none">
+          <h2 id="chart-title-display"></h2>
+          <p id="chart-subtitle-display"></p>
+        </div>
+        <div class="chart-canvas" id="chart-canvas">
+          <div class="empty-state" id="chart-placeholder">
+            <svg viewBox="0 0 100 100" width="72" height="72" class="es-icon" aria-hidden="true">
+              <polygon points="50,5 92,28 92,72 50,95 8,72 8,28" fill="none" stroke="currentColor" stroke-width="2" opacity="0.25"/>
+              <polygon points="50,18 79,34.5 79,65.5 50,82 21,65.5 21,34.5" fill="none" stroke="currentColor" stroke-width="2" opacity="0.45"/>
+              <polygon points="50,31 66,40.5 66,59.5 50,69 34,59.5 34,40.5" fill="none" stroke="currentColor" stroke-width="2" opacity="0.65"/>
+              <circle cx="50" cy="50" r="3" fill="currentColor" opacity="0.5"/>
+            </svg>
+            <h3>No data loaded</h3>
+            <p>Upload a CSV or JSON, add series/axes manually, or edit values in Data Entry.</p>
+            <div class="es-actions">
+              <label class="btn-ghost" for="file-input">Upload CSV</label>
+              <label class="btn-ghost" for="json-input">Upload JSON</label>
+            </div>
+          </div>
+          <svg id="radar-svg" class="radar-svg" style="display:none" role="img" aria-label="Radar chart"></svg>
+        </div>
+        <div id="legend" class="legend" role="list" aria-label="Series legend"></div>
+      </div>
+
+      <!-- Table view -->
+      <div id="view-table" class="view-panel">
+        <div class="tbl-toolbar">
+          <div class="search-box">
+            <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+            </svg>
+            <input type="text" id="table-search" placeholder="Filter axes…" class="search-input">
+          </div>
+        </div>
+        <div id="table-container" class="table-container"></div>
+      </div>
+
+      <!-- Data Entry view -->
+      <div id="view-entry" class="view-panel">
+        <div id="data-entry-container" class="table-container"></div>
+      </div>
+    </main>
+  </div>
+
+  <div id="tooltip" class="tooltip tt-hidden" role="tooltip"></div>
+  <div id="toast" class="toast" role="status"></div>
+
+  <script type="module" src="js/main.js"></script>
+
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(reg => console.log('SW registered:', reg))
+          .catch(err => console.error('SW registration failed:', err));
+      });
+    }
+  </script>
+
+</body>
+</html>
