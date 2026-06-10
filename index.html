@@ -11,7 +11,7 @@
 
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#06d6f0">
-  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="RadarViz">
   <link rel="apple-touch-icon" href="icons/icon-192.png">
@@ -330,7 +330,10 @@ Ductility,78,45</pre>
   <script>
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
+        // Get the current path (e.g., /Radar-Chart-Pro/)
+        const basePath = window.location.pathname.replace(/\/[^/]*$/, '/');
+        const swPath = `${basePath}sw.js`;
+        navigator.serviceWorker.register(swPath)
           .then(reg => console.log('SW registered:', reg))
           .catch(err => console.error('SW registration failed:', err));
       });
